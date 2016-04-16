@@ -1,0 +1,53 @@
+        <div class="jumbotron">
+        <h1>GeoLocation API</h1>
+        <p>You can allow users can share their locations to interact with your services.</p>
+           <h2>For JavaScript API include:</h2>
+           <li>IN THE HTML HEAD Section: <b>&lt;script src="/ADNBP/js/adnbpcloudframework.js">&lt;/script></b>
+               and you will can to use two simple Javascript Functions.
+               
+           <br> - <a href='#' onclick='setGeoLocationByBrowser();return false;'>setGeoLocationByBrowser();</a> <a href='#' onclick='alert(getGeoLocationByBrowser());return false;'>getGeoLocationByBrowser();</a> </li>
+    
+
+        </p>
+           <p><b>If you want to use Google Maps API.</b>:<br>
+           <li>IN config/config.php SET: <br>
+               <small>
+           $this->setConf("GoogleMapsAPI",{GoogleMapsAPI}); // Need a true value<br>
+           // Put a valid value from  https://console.developers.google.com/project/{project}/apiui/api<br>
+           $this->setConf("GooglePublicAPICredential","{GooglePublicAPICredential}"); 
+           </small>
+           </p>
+        </div>
+        
+       <pre>
+        <li> IN HE HTML HEAD and BODY Section:</li>
+        &lt;?php if(strlen($this->getConf("GooglePublicAPICredential")) && $this->getConf("GoogleMapsAPI")) {?>
+            &lt;meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+            &lt;style type="text/css">
+              #map-canvas { height: 100% }
+            &lt;/style>
+            &lt;script type="text/javascript"src="https://maps.googleapis.com/maps/api/js?key=<?=$this->getConf("GooglePublicAPICredential")?>&sensor=true"></script>
+         &lt;?php } ?>
+         ....
+         &lt;/head>
+         ....
+         &lt;body>
+         &lt;div id="map-canvas"/>
+         &lt;a href='#' onclick='showGeoLocationByBrowserInGoogleMaps("map-canvas");'>showGeoLocationByBrowserInGoogleMaps("map-canvas");&lt;/a>
+         </pre>
+         <div class="jumbotron">
+        <a href='#' onclick='setGeoLocationByBrowser();return false;'>setGeoLocationByBrowser();</a> 
+        <br/>
+        <a href='#' onclick='showGeoLocationByBrowserInGoogleMaps("map-canvas");return false;'>showGeoLocationByBrowserInGoogleMaps("map-canvas");</a>
+        <table width='50%' height="300" border=1><tr><td height="10%">
+            <div id="map-canvas"/>
+            </td></tr></table>
+         </div>
+         
+        <div class="jumbotron">
+        <h2>For PHP GeoPluggin based on IP with external services: http://www.geoplugin.net</h2>
+        <li>Use for example: print_r($this->getGeoPlugin());</li>
+         </div>
+         <pre>
+             {output}
+         </pre>

@@ -1,0 +1,16 @@
+        <pre>{msg}</pre>
+        <div class="jumbotron">
+        <h1>Excel</h1>
+        <p>Cloud FrameWork has adapted PHPExcel to facilitate the generation of Excel Files</p>
+        
+        <form id=emailForm name=emailForm method=post>
+            <input type='hidden' name='export' value='1'>
+            File Name <input type='text' name='filename' value='data.xlsx'>
+            <br/>Array with data:<br/> 
+            <textarea rows=5 cols=60 name='data'>{data}</textarea>
+            <br/><input type=submit value='Expor to Excel'>
+        </form>
+                
+        <h2>Source code:</h2>
+        </div>
+        <pre>{source}</pre>

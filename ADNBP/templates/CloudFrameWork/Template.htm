@@ -1,0 +1,30 @@
+<html>
+	<body>
+		<h1>Exmple of template</h1>
+		
+		<h2>You can do var subtitutions defining template-vars with the format: {{var-name}}.</h2>
+		
+		<p>Example. </p>
+		<blockquote>
+		Subsitute template-var 'msg' passing in the URL: ?msg=value: {{msg}}
+		</blockquote>
+		
+		<h2>Your templates also can have muti-language.</h2>
+		<h3>Ways to write multi-language</h3>
+		<pre>
+		1. {{
+			lang:{lang}[,default][[Text]]
+			lang:{other-lang}[[Text]]
+			
+			}}
+		example: {{lang:es[[Hola]] lang:en,default[[Hello]]}}
+
+		2. {{dic:{cat},{code}}}. It is neccesary to connect with a CloudService of translations. Add conf-var:CloudServiceDictionary and CloudServiceKey
+		</pre>
+		<p>Example. </p>
+		<blockquote>
+		Add to the API url: /{lang}.. /api/templates/Template/en
+		</blockquote>
+		
+	</body>
+</html>

@@ -1,0 +1,46 @@
+        <pre>
+            DB connection: {output}
+        </pre>
+        <div class="jumbotron">
+        <h1>CloudSQL/Mysql API</h1>
+        <p>Let's see how we can interact with a CloudSQL or Mysql Database.</p>
+           <h2>For CloudSQL connection you have to use a socket:</h2>
+           <small>
+           $this->setConf("dbSocket","/cloudsql/{application}:{dbName}");
+           </small>
+           <h2>For Remote CloudSQL or Mysql have to use a IP:</h2>
+           <small>
+           $this->setConf("dbServer",'{IP}');
+           </small>
+           <h2>Common configuracion:</h2>
+           <small>
+               $this->setConf("dbUser",'{dbUser}');  // In Geanet is adnbp<br/>
+               $this->setConf("dbPassword",'{dbPassw}');<br/>
+               $this->setConf("dbPort",'{dbPort}'); // Only used with dbServer<br/>
+               $this->setConf("dbName",'{dbName}');<br/>
+               </small>
+           <h2>Tip:</h2>
+           <pre>
+            // Recommend the following code:<br/>
+            if(strpos($_SERVER['SERVER_NAME'], "localhost") !== false)
+                $this->setConf("dbServer",'XXX.XX.XX.XX');
+            else
+                $this->setConf("dbSocket","/cloudsql/poject:db");
+               </pre>
+           </p>
+        </div>
+        <div class="jumbotron">
+        <h2>Using CloudSQL Object</h2>
+        <pre>
+            $this->loadClass("db/CloudSQL");
+            $db = new CloudSQL();
+            
+            if($db->connect()) {
+                $output =  "&gt;li>OK accessing to ( ".$this->getConf("dbServer")." ".$this->getConf("dbSocket")." )";
+                $db->close();
+            } else {
+                $output =  "&gt;li>ERROR: ".$db->getError();
+                
+            }
+        </pre>
+        </div>

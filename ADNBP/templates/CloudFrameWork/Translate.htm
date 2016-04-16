@@ -1,0 +1,81 @@
+        <div class="jumbotron">
+        <h1>Google API Translate</h1>
+        <p>Allows  real-time-translation from a language to other. You have to activate the API in your console: https://console.developers.google.com/project/apps~{your-project-Id}/apiui/api
+        and to provide a SERVER-KEY (with local API allowed) o API-KEY(with local domain allowed)
+        </p>
+        
+      	<form id=translate name=translate class="navbar-form " method=get>
+            <table>
+
+            	<tr>
+            		<td>
+
+            			 <textarea id='msgSource' class="form-control" rows=5 cols=60 name='msgSource' placeholder='Write your text'>{msgSource}</textarea>
+            		</td>
+            		<td>&nbsp;<select class="form-control" id='langs' name='langs'>
+            			    {sourceLangs}
+            				</select>
+            				<br/>
+            				 </td>
+            		<td>
+            			 <textarea id='msgTranslated' class="form-control" rows=5 cols=60 >{msgTranslated}</textarea>
+            		</td>
+            	</tr>
+                <tr>
+                    <td colspan="3" align="center">
+                        <br/>
+                     <input class="btn"  onclick='getTranslation($("#msgSource").val(),$("#langs").val(),$("#publicKey").val())' type=button value='Translate Using Public Key to use with JavaScript Call'> 
+                     <input value="{publicKey}" type="input" id='publicKey' name="publicKey"  placeholder="Write your Google Public Key" class="form-control" >
+                     <br/>it can be configured $this->setConf('GooglePublicAPICredential','XX');
+                        <br/>
+                        <br/>
+                     <input class="btn"  type=submit value='Translate Using Server Key to use with a Server Call'> 
+                     {serverKey}
+                     <br/>it can be configured $this->setConf('GoogleSeverAPICredential','XX');
+                    </td>
+                </tr>
+            </table>
+           
+        </form>
+        </div>
+        <script>
+        
+           // Simple Hascode Function
+           hashCode = function(str) {
+                var hash = 0;
+                if (str.length == 0) return hash;
+                for (i = 0; i < str.length; i++) {
+                    char = str.charCodeAt(i);
+                    hash = ((hash<<5)-hash)+char;
+                    hash = hash & hash; // Convert to 32bit integer
+                }
+                return hash;
+            }
+            
+            var trans = {}; // It will optimize the calls avoiding 2 calls for the same text
+            function getTranslation(value,langs,keyValue) {
+                if(value.length < 2) alert('write a message to translate');
+                else if(langs.length < 5) alert('missing langs');
+                else if(keyValue.length < 15) alert('missing GooglePublicAPI');
+                else {
+                    var tHash = hashCode(value+langs);
+                    if(trans[tHash] !== undefined) {
+                        alert('String cached');
+                        $("#msgTranslated").val(trans[tHash]);
+                    } else {
+                      
+                        // Function to GET a URL
+                        var lang = langs.split(',');
+                        // trans[hashCode(value)] = true;
+                        $.get("https://www.googleapis.com/language/translate/v2",{q:value,source:lang[0],target:lang[1],key:keyValue},function(data) {
+                            
+                            var t = data.data.translations[0].translatedText;
+                            var tDecoded = jQuery('<div />').html(t).text();
+                            $("#msgTranslated").val(tDecoded);
+                            trans[tHash] = tDecoded;
+                        });
+                    }
+                    
+               }
+            }
+        </script>

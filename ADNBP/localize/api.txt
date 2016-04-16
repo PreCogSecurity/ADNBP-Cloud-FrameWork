@@ -1,0 +1,124 @@
+FORMAT: 1A
+
+# API
+<h2>Allowed HTTPs requests:</h2>
+<ul>
+<li>POST - Creates or updates a resource
+<li>PUT - Updates a resource
+<li>GET - Retrieves a resource or list of resources
+<li>DELETE - Delete a resource
+</ul>
+
+<h2>Typical Server Responses</h2>
+<ul>
+<li>200 OK - The request was successful (some API calls may return 201 instead).
+<li>201 Created - The request was successful and a resource was created.
+<li>204 No Content - The request was successful but there is no representation to return (that is, the response is empty).
+<li>400 Bad Request - The request could not be understood or was missing required parameters.
+<li>401 Unauthorized - Authentication failed or user does not have permissions for the requested operation.
+<li>403 Forbidden - Access denied.
+<li>404 Not Found - Resource was not found.
+<li>405 Method Not Allowed - Requested method is not supported for the specified resource.
+<li>429 Too Many Requests - Exceeded CloudFrameWork API limits. Pause requests, wait one minute, and try again.
+<li>503 Service Unavailable - The service is temporary unavailable (e.g. scheduled Platform Maintenance). Try again later.
+</ul>
+
+# Group CloudFrameWork Basic
+CloudFrameWork Basic Calls to understand how it works.
+
+## version [/_version]
+### Version of the current Cloud FrameWork [GET]
++ Response 200 (text/plain)
+
+Your current CloudFrameWork version is: XXXXXX
+
+## myip [/myip]
+### Get the current IP and geolocalization [GET]
++ Response 200  (application/json)
+
+{
+"success": true,
+"status": 200,
+"data": [
+{
+"source_ip": "::1",
+"request": "87.220.130.48",
+"status": 206,
+"credit": "Some of the returned data includes GeoLite data created by MaxMind, available from <a href=\\'http:\/\/www.maxmind.com\\'>http:\/\/www.maxmind.com<\/a>.",
+"city": "",
+"region": "",
+"areaCode": "0",
+"dmaCode": "0",
+"countryCode": "ES",
+"countryName": "Spain",
+"continentCode": "EU",
+"latitude": "40",
+"longitude": "-4",
+"regionCode": "",
+"regionName": null,
+"currencyCode": "EUR",
+"currencySymbol": "&#8364;",
+"currencySymbol_UTF8": "€",
+"currencyConverter": "0.9184"
+}
+]
+}
+
+## crypt [/crypt]
+### Encrypt a string to generate a password [POST]
++ Request (html/form-data) or (application/json)
+
+        { "password": string to encrypt }
+        
++ Response 200  (application/json)
+
+{
+"success": true,
+"status": 200,
+	"data": {
+	"password": "hola",
+	"crypt": "$2a$07$6MOSjHlrRaYRSD4xyIIgE.qYcz8qeFZTze58jykOVUlVirmeoSJ72"
+	}
+}
+
+
+# Group Notes
+CloudFrameWork calls
+## Notes Collection [/notes]
+### List all Notes [GET]
++ Response 200 (application/json)
+
+        [{
+          "id": 1, "title": "Jogging in park"
+        }, {
+          "id": 2, "title": "Pick-up posters from post-office"
+        }]
+
+### Create a Note [POST]
++ Request (application/json)
+
+        { "title": "Buy cheese and bread for breakfast." }
+
++ Response 201 (application/json)
+
+        { "id": 3, "title": "Buy cheese and bread for breakfast." }
+
+## Note [/notes/{id}]
+A single Note object with all its details
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
+
+### Retrieve a Note [GET]
++ Response 200 (application/json)
+
+    + Header
+
+            X-My-Header: The Value
+
+    + Body
+
+            { "id": 2, "title": "Pick-up posters from post-office" }
+
+### Remove a Note [DELETE]
++ Response 204

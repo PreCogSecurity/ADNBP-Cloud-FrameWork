@@ -1,0 +1,35 @@
+application: adnbp-cloud-framework
+version: 1
+runtime: php55
+api_version: 1
+
+handlers:
+# All Under CloudFrameWork is a ADNBP FrameWorkScript  
+- url: /CloudFrameWork(.+)$
+  script: ADNBP/adnbppl.php
+
+- url: /$
+  script: ADNBP/adnbppl.php
+  
+# Serve html & php  as script and /
+- url: /(.+\.(html|php))$
+  script: \1
+
+# About the read config json config vars.
+- url: /((.+|)config\.json)$
+  script: ADNBP/models/foo.json
+
+# Serve images as static resources.
+- url: /(.+\.(gif|png|jpg|css|ico|txt|htm|js))$
+  static_files: \1
+  upload: .+\.(gif|png|jpg|css|ico|txt|htm|js)$
+  application_readable: true
+
+- url: /(.+\..+)$
+  static_files: \1
+  upload: .+\..+$
+  application_readable: true
+  
+# Friendly Links as ADNBP FrameWorkScript  
+- url: /(.+)$
+  script: ADNBP/adnbppl.php

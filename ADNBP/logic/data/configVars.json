@@ -1,0 +1,43 @@
+[
+	{
+		"title": "Configure your public/private Portal defining <b>friendly-urls</b>",
+		"subtitle": "What you do you want to show when someone goes to <b>{your_url}/</b> or <b>{your_url}/help</b> ?
+			<p>You can define the friendly-url and to say what logic or/and template to show.</p>
+		",
+		"description": "{webapp}/config/menu.php",
+		"vars": [
+			{ "file": "{webapp}/config/menu.php"}
+		]
+	}
+	,{
+		"title": "DB Connection",
+		"subtitle": "Connection properties",
+		"description": "To connect with a Mysql Database you can execute:
+		<pre>
+		$this->loadClass('db/CloudSQL');
+		// It will take the connection parameters from $this->getCon({vars}); 
+		$db = new CloudSQL(); // it will take </pre>
+		",
+		"vars": [
+			{ "var": "dbServer","default": "127.0.0.1","description": "IP of the server to connect."}
+		   ,{ "var": "dbSocket", "description": "If not empty dbServer will be ignored. Socket to connect. Ex Google Cloud: /cloudsql/{project-id}:{database}"}
+		   ,{ "var": "dbUser","description": "User for auth"}
+		   ,{ "var": "dbPassword","description": "Password for auth"}
+		   ,{ "var": "dbName","default":"'mysql'","description": "Database name to connect"}
+		   ,{ "var": "dbPort","default":"'3306'","description": "Port to connect"}
+		]
+	}
+	,{
+		"title": "Cloud Framework Services",
+		"subtitle": "End-Point configuration",
+		"description": "You can take advantage of ADNBP Cloud Framework Services in a very easy way.",
+		"vars": [
+			{ "var": "dbServer","default": "127.0.0.1","description": "IP of the server to connect."}
+		   ,{ "var": "dbSocket", "description": "If not empty dbServer will be ignored. Socket to connect. Ex Google Cloud: /cloudsql/{project-id}:{database}"}
+		   ,{ "var": "dbUser","description": "User for auth"}
+		   ,{ "var": "dbPassword","description": "Password for auth"}
+		   ,{ "var": "dbName","default":"'mysql'","description": "Database name to connect"}
+		   ,{ "var": "dbPort","default":"'3306'","description": "Port to connect"}
+		]
+	}
+]

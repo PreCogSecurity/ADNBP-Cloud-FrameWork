@@ -1,0 +1,327 @@
+        <div class="jumbotron">
+        <h1>Chat Cloud FrameWork</h1>
+        <p>Many times to have a Chat for customer support will increase your sales and service quality. Here you can find a basic chat based in Cloud FrameWork Chat API service (CFCAS).
+           This service allows communicate one-to-one with many-to-one notifications.
+        </p>
+        <p>This example is 100% ajax communicating with RESTFull Chat Cloud FrameWork API Service.</p>
+
+        </div>
+        <form id=translate name=translate  role="form" method=get>
+
+        <div class="row">
+         <div class="col-md-6">
+            <div class="form-inline">
+            <label for="apiService" class="control-label">&nbsp;&nbsp;Api URL:&nbsp;&nbsp;</label>
+            <input value="http://localhost:9080/api/chat" type="input" id='apiService' name="apiService"  placeholder="Url of you API" class="form-control" >
+
+            <label for="apiService" class="control-label">&nbsp;&nbsp;Merchant to Contact:&nbsp;&nbsp;</label>
+            <input value="Bloombees" type="input" id='clientUserId' name="clientUserId"  placeholder="Merchant Id" class="form-control" >
+            </div>   
+           
+            <div class="panel panel-default">
+              <div class="panel-heading">
+
+                <div class="row">  
+                    <div class="col-xs-2">  
+                    <h3 class="panel-title">Client CHAT</h3>
+                    </div>
+                    <div class="col-xs-3">  
+                        <input value="ClientId" type="input" id='clientId' name="clentId"  placeholder="clientId" class="form-control input-sm" >
+                    </div>
+                    <div class="col-xs-2">  
+                    <select class="form-control input-sm" id='clientLang' name='clientLang'
+                    onchange="$('#merchantTransLang').val($('#clientLang').val());$('#merchantTranslate').html($('#clientLang option:selected').text());"
+                    >
+                        <option value='en'>English</option>
+                        <option value='es'>Español</option>
+                        <option value='ru'>Русский</option>
+                    </select>  
+                    </div>                 
+                    
+                    <div class="col-xs-2">  
+                        <input value="begin" type="button"  class="btn btn-primary btn-sm" onclick="initChat('client');">
+                    </div>
+
+                </div>
+
+              </div>
+              <div class="panel-body">
+                 <textarea id='clientArea'  class="form-control" rows="10" readonly></textarea>
+                 <div class='form-inline'>
+                     <input size=60 value="" type="input" id='clientDialog' name="clientDialog"  
+                     placeholder="write your text" 
+                     class="form-control" 
+                     onkeypress="if (event.keyCode==13){ addChat('client'); }"
+                     >
+                    
+                      <div class="checkbox">
+                      <label>
+                        <input type="checkbox" id='clientTransLang' value="en">
+                        Translate to <span id='clientTranslate'>English</span>
+                      </label>
+                    </div>
+                 </div>   
+              </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+        </div>  
+          
+          <div class="col-md-6">
+            <div class="form-inline">
+            <label for="apiService" class="control-label">&nbsp;&nbsp;Client who has contacted:&nbsp;&nbsp;<br/></label>
+             <input value="ClientId" type="input" id='merchantUserId' name="merchantUserId"  placeholder="Your client is" class="form-control " >
+
+            </div>               
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <div class="row">  
+                    <div class="col-xs-2">  
+                    <h3 class="panel-title">Merchant CHAT</h3>
+                    </div>
+                    <div class="col-xs-3">  
+                        <input value="Bloombees" type="input" id='merchantId' name="merchantId"  placeholder="MerchantId" class="form-control input-sm" >
+                                         
+                    </div>
+                    <div class="col-xs-3">  
+                    <select class="form-control input-sm" id='merchantLang' name='merchantLang' 
+                    onchange="$('#clientTransLang').val($('#merchantLang').val());$('#clientTranslate').html($('#merchantLang option:selected').text());"
+                    >
+                        <option value='en'>English</option>
+                        <option value='es'>Español</option>
+                        <option value='ru'>Русский</option>
+                    </select>  
+                    </div>
+                    <div class="col-xs-2">  
+                        <input value="begin" type="button"  class="btn btn-primary btn-sm" onclick="initChat('merchant');">
+                    </div>
+                    <div class="col-xs-2">  
+                    </div>
+                </div>
+              </div>
+              
+              <div class="panel-body">
+                 <textarea id='merchantArea'  class="form-control" rows="10" readonly></textarea>
+                 
+                 <div class='form-inline'>
+                     
+                     <input size='60' value="" type="input" id='merchantDialog' name="merchantDialog"  
+                     placeholder="write your text" 
+                     class="form-control" 
+                     onkeypress="if (event.keyCode==13){ addChat('merchant'); }"
+                     >
+                     <div class="checkbox">
+                      <label>
+                        <input type="checkbox" id='merchantTransLang' value="en">
+                        Translate to <span id='merchantTranslate'>English</span>
+                      </label>
+                    </div>
+                    
+                </div>
+              </div><!-- panel-body -->
+            </div> <!-- panel -->
+            
+        </div> <!-- col-md-6 -->
+                 
+
+        </div>
+</form>
+
+        <script>
+        
+        	var lastChatId='';
+        	var merchantInputs = {};
+        	var clientInputs = {};
+        	
+           // Simple Hascode Function
+           function addChat(pref) {
+           	
+               var messageToSend = $('#'+pref+'Dialog').val();               
+           	   if(messageToSend.length < 1) return;
+           	   
+               var org='5';
+               var chatId='1';
+               var source=$('#'+pref+'Id').val();
+               var dest = $('#'+pref+'UserId').val();
+               var langSource = $('#'+pref+'Lang').val();               
+               var langDest = (pref=='merchant')?$('#clientLang').val():$('#merchantLang').val();               
+               var url = $('#apiService').val()+"/"+org+"/"+chatId+"/"+source+"/"+dest;
+               var params = {message:messageToSend,lang:langSource};
+               var transLang = $('#'+pref+'TransLang').val();
+               
+               if($('#'+pref+'TransLang').prop('checked') && langSource != transLang)
+                  params = {message:messageToSend,lang:langSource,translate:1,translate_lang:transLang};
+               
+               $.ajax({
+               	   url: url,
+               	   crossDomain: true,
+               	   dataType: 'json',
+                   data: JSON.stringify(params),
+                   type:'POST',
+                }).done(function(data) {
+                   var addText = $('#'+pref+'Area').val()+"\n"+data.data.ChatsConversation_DateTime+': You'+"\n  ["+data.data.ChatsConversation_UserLang+'] '+data.data.ChatsConversation_Name;
+                   if(data.data.ChatsConversation_RequireTranslation==1) {
+                        addText = addText + "\n  ["+data.data.ChatsConversation_DestIdLang+'] '+data.data.ChatsConversation_TextTranslated;
+                   }     
+                   
+                   var id = data.data.ChatsConversation_Id;
+                   
+                   // Save in an associative array the Ids inserted to avoid repetition
+                   if(pref=='merchant') merchantInputs[id] = 1;
+                   else clientInputs[id] = 1;
+                   
+                   $('#'+pref+'Area').val(addText);
+                   $('#'+pref+'Dialog').val('');
+                    var psconsole = $('#'+pref+'Area');
+                    psconsole.scrollTop(
+                        psconsole[0].scrollHeight - psconsole.height()
+                    );                   
+                            //alert(data.data.ChatsConversation_Name+' en '+pref);
+                }).fail(function() {
+                    var addText = $('#'+pref+'Area').val()+"\nError.. try again.";
+                    $('#'+pref+'Area').val(addText);
+                    var psconsole = $('#'+pref+'Area');
+                    psconsole.scrollTop(
+                        psconsole[0].scrollHeight - psconsole.height()
+                    ); 
+                    alert('Error');
+                });
+           }
+           
+           function initChat(pref) {
+               var org='5';
+               var chatId='1';
+               var source=$('#'+pref+'Id').val();
+               var dest = $('#'+pref+'UserId').val();
+               var langSource = $('#'+pref+'Lang').val();               
+               var langDest = (pref=='merchant')?$('#clientLang').val():$('#merchantLang').val();
+               var lastUserId = '';
+               
+               // init box if we reload
+               if(lastChatId=='') {
+	               $('#merchantArea').val('');
+	               $('#clientArea').val('');
+               }
+               
+               // Update the oposite to emulate experience
+               var opPref = (pref=='merchant')?'client':'merchant';
+               $('#'+opPref+'Id').val(dest);
+               $('#'+opPref+'UserId').val(source);
+               
+               // Lets do the call
+               var url = $('#apiService').val()+"/"+org+"/"+chatId+"/updated/"+source+"/"+dest; 
+               $.get(url
+                   ,{from:lastChatId}
+                   ,function(data) {
+                            var addTextSource = '';
+                            var addTextDest = '';
+                            var personSource = '';
+                            var personDest = '';
+                            var line = '';
+                            var lastUserIdPref='';
+                            var lastUserIdOpPref='';
+                            
+                            for(x=0,tr=data.data.length;x<tr;x++) {
+                            	
+                            	var id =  data.data[x].ChatsConversation_Id;
+                            	
+                            	// We control if the lines exist in the las inputs of Mercharnt or Client 
+                            	var avoidMerchant = (id in merchantInputs);
+                            	var avoidClient = (id in clientInputs);
+                            	
+                            	// Store the Last Id to send in the next query and avoid to load everything allways
+                            	if(x==0) lastChatId = id;
+                            	
+                            	// Avoid the lines inserted by the user
+                            	if( (pref=='merchant' && !avoidMerchant) || (pref=='client' && !avoidClient) ) {
+	                                personSource = (data.data[x].ChatsConversation_UserId == source)?'You':data.data[x].ChatsConversation_UserId;
+	                                line = "\n"+data.data[x].ChatsConversation_DateTime+': '+personSource+"\n  ["+data.data[x].ChatsConversation_UserLang+'] '+data.data[x].ChatsConversation_Name;
+	                                if(data.data[x].ChatsConversation_RequireTranslation==1) {
+	                                    line = line + "\n  ["+data.data[x].ChatsConversation_DestIdLang+'] '+data.data[x].ChatsConversation_TextTranslated;
+	                                }
+	                                // The previous line change the user add a return for visual propose
+	                                if(lastUserIdPref != data.data[x].ChatsConversation_UserId) line = line+"\n";
+	                                addTextSource = line+addTextSource;
+	                                
+	                                // For visual control I have to know who was the previous user
+	                                lastUserIdPref = data.data[x].ChatsConversation_UserId;
+
+                                }
+                                
+                                if( (opPref=='merchant' && !avoidMerchant) || (opPref=='client' && !avoidClient) ) {
+	                                personDest = (data.data[x].ChatsConversation_UserId == dest)?'You':data.data[x].ChatsConversation_UserId;
+	                                line = "\n"+data.data[x].ChatsConversation_DateTime+': '+personDest+"\n  ["+data.data[x].ChatsConversation_UserLang+'] '+data.data[x].ChatsConversation_Name;
+	                                if(data.data[x].ChatsConversation_RequireTranslation==1) {
+	                                    line = line + "\n  ["+data.data[x].ChatsConversation_DestIdLang+'] '+data.data[x].ChatsConversation_TextTranslated;
+	                                }
+	                                // The previous line change the user add a return for visual propose
+	                                if(lastUserIdOpPref != data.data[x].ChatsConversation_UserId) line = line+"\n";
+	                                addTextDest = line+addTextDest;
+	                                // For visual control I have to know who was the previous user
+	                                lastUserIdOpPref = data.data[x].ChatsConversation_UserId;
+                                }
+	                                
+                            }
+                            
+                            // If there is new information
+                            if(addTextSource != '') {
+	                            $('#'+pref+'Area').val($('#'+pref+'Area').val()+"\n"+addTextSource);
+	                            var psconsole = $('#'+pref+'Area');
+	                            psconsole.scrollTop(
+	                                psconsole[0].scrollHeight - psconsole.height()
+	                            );  
+	                        }
+	                        
+	                        if(addTextDest != '') { 
+	                            $('#'+opPref+'Area').val($('#'+opPref+'Area').val()+"\n"+addTextDest);
+	                            psconsole = $('#'+opPref+'Area');
+	                            psconsole.scrollTop(
+	                                psconsole[0].scrollHeight - psconsole.height()
+	                            );  
+	                        }
+                        });
+               
+           }
+           
+           var chatInterVal = setInterval (function() {initChat('client');}, 10000);
+           // clearInterval(chatInterVal);
+           
+           hashCode = function(str) {
+                var hash = 0;
+                if (str.length == 0) return hash;
+                for (i = 0; i < str.length; i++) {
+                    char = str.charCodeAt(i);
+                    hash = ((hash<<5)-hash)+char;
+                    hash = hash & hash; // Convert to 32bit integer
+                }
+                return hash;
+            }
+            
+            var trans = {}; // It will optimize the calls avoiding 2 calls for the same text
+            function getTranslation(value,langs,keyValue) {
+                if(value.length < 2) alert('write a message to translate');
+                else if(langs.length < 5) alert('missing langs');
+                else if(keyValue.length < 15) alert('missing GooglePublicAPI');
+                else {
+                    var tHash = hashCode(value+langs);
+                    if(trans[tHash] !== undefined) {
+                        alert('String cached');
+                        $("#msgTranslated").val(trans[tHash]);
+                    } else {
+                      
+                        // Function to GET a URL
+                        var lang = langs.split(',');
+                        // trans[hashCode(value)] = true;
+                        $.get("https://www.googleapis.com/language/translate/v2",{q:value,source:lang[0],target:lang[1],key:keyValue},function(data) {
+                            
+                            var t = data.data.translations[0].translatedText;
+                            var tDecoded = jQuery('<div />').html(t).text();
+                            $("#msgTranslated").val(tDecoded);
+                            trans[tHash] = tDecoded;
+                        });
+                    }
+                    
+               }
+            }
+        </script>

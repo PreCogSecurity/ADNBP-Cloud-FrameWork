@@ -1,0 +1,25 @@
+[
+	{
+		"command": "saveadnbpframeworkfile",
+		"alert": "If you save {document_root}/adnbp_framework_config.php will be written deleting previous information",
+		"title": "Start configuration",
+		"subtitle": "First time configuration in localhost. IT DOES NOT WORK IN PRODUCTION SERVERS",
+		"description": "Let's create a basic structure:
+<pre>
+{document_root}/adnbp_framework_config.php 
+{document_root}/{your_proyect_webapp}
+{document_root}/{your_proyect_webapp}/config
+{document_root}/{your_proyect_webapp}/logic
+{document_root}/{your_proyect_webapp}/templates
+</pre>
+		",
+		"vars": [
+			{ "var": "CloudFrameWorkWebApp","default": "/ADNBP/webapp. Inside the FrameWork"
+			,"description": "Where are my personal APP files. Write something like <i>'myproject'</i> and myproject_webapp directory will be crreated."
+			}
+			,{ "var": "CloudFrameWorkConfigPassword","default": "Everybody can change the portal config"
+			,"description": "What will be your master password to configure this solution. The password will be crypted with $this->crypt function."
+			}
+		]
+	}
+]

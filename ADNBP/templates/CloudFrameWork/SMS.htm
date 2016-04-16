@@ -1,0 +1,19 @@
+        <pre>{msg}</pre>
+        <div class="jumbotron">
+        <h1>SMS</h1>
+        <p>SMS is a good alternative to validate Mobile phone or just send Messages. We facilitate this service to allow SMS interaction
+           World Wide with Twilio. About Twilio: <a href='https://www.twilio.com/user/account/phone-numbers/incoming' target=_blank>https://www.twilio.com/user/account/phone-numbers/incoming</a></p>
+        
+      <form id=emailForm name=emailForm method=post>
+            <input type='hidden' name='send' value='1'>
+            <input type='hidden' name='useSendGrid' value='0'>
+            From:  <b>{From}</b> (use in /config/config.php $this->setConf("twilioNumber") to change it.)
+            <br/>To: <input type='text' name='to' value='{To}'> +{CountryCode} {Mobile Number} 
+            <br/>Txt content:<br/> <textarea rows=5 cols=60 name='txtMsg'>{txtMsg}</textarea>
+            <br/><input type=submit value='submit msg'>
+        </form>
+        
+        <h2>Source code:</h2>
+        </div>
+        <pre>{source}</pre>
+

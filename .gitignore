@@ -1,0 +1,11 @@
+.project
+**/app.yaml
+README.md
+.git/*
+.idea/*
+local_config.php
+**/composer.phar
+**/composer.lock
+adnbp_framework_config.php
+php.ini
+\.DS\_Store

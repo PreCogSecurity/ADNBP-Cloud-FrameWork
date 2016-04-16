@@ -1,0 +1,24 @@
+        <div class="jumbotron">
+        <h1>Emailing</h1>
+        <p>Cloud FrameWork allows sending email through Google Apps capabilities or Sendgrid. For other email necesities implement your own code.</p>
+        
+      <form id=emailForm name=emailForm method=post>
+            <input type='hidden' name='send' value='1'>
+            <input type='hidden' name='useSendGrid' value='0'>
+            From:  <input type='text' name='from' value='{From}'> (use in /config/config.php $this->setConf("defaultEmailSender") to change it.)
+            <br/>To: <input type='text' name='to' value='{To}'> (email1[,email2[,email3[,..]]])
+            <br/>Subject: <input size=20 name='subject' type='text' value='{Subject}'>
+            <br/>Txt content:<br/> <textarea rows=5 cols=60 name='txtMsg'>{txtMsg}</textarea>
+            <br/>HTML content:<br/> <textarea rows=5 cols=60 name='htmlMsg'>{htmlMsg}</textarea>
+            <br/><input type=submit value='submit using GAE assuring the From is a valid Google Apps Account'>
+            <br/><br/><h2>sendGrid Options</h2>
+            sendgridUser:  <input type='password' name='sendGridUser' value='{sendGridUser}'> (put in /config/config.php $this->setConf("sendgridUser") to use sendGrid it.)
+            <br/>sendgridPassword:  <input type='password' name='sendGridPassword' value='{sendGridPassword}'> (put in /config/config.php $this->setConf("sendgridPassword") to use sendGrid it.)
+            <br/><input type=submit onclick='document.emailForm.useSendGrid.value="1"' value='submit using SendGrid'>
+        </form>
+        
+        <br/><br/>
+        <h2>Source code:</h2>
+        </div>
+        <pre>{source}</pre>
+

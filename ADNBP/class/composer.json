@@ -1,0 +1,15 @@
+{
+  "name": "cloudframework/adnbp",
+  "description": "Composer integration for ADNBP framework",
+  "require": {
+    "google/apiclient": "1.1.6"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Fran López",
+      "email": "fl@bloombees.com"
+    }
+  ],
+  "minimum-stability": "dev"
+}
