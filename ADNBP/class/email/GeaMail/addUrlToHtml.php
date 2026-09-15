@@ -11,7 +11,7 @@
 
    // Build the list of image extensions
    $extensions = array();
-   while (list($key,) = each($this->image_types)) { $extensions[] = $key; }
+   foreach ($this->image_types as $key => $_unused) { $extensions[] = $key; }
    preg_match_all('/("|\')([^"\']+\.('.implode('|', $extensions).'))("|\')/Ui', $html, $images);
 
 
@@ -25,7 +25,7 @@
    }
 
    if(is_array($files))
-   while (list($key,$value) = each($files)) { 
+   foreach ($files as $key => $value) { 
      $html = str_replace($key, $value, $html);
    }
 ?>

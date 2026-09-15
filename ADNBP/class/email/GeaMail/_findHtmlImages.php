@@ -1,7 +1,7 @@
 <?php
     // Build the list of image extensions
     reset($this->image_types);
-    while (list($key,) = each($this->image_types)) {
+    foreach ($this->image_types as $key => $_unused) {
             $extensions[] = $key;
     }
 

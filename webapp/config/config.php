@@ -9,7 +9,7 @@
 // $this->setConf("CloudServiceUrl","/api");
 
 // $this->setConf("GoogleMapsAPI",true);
-// $this->setConf("GooglePublicAPICredential","AIzaSyARDfk6bgUxrCZbg2n68--f0LL6k8b_mjg"); 
+// $this->setConf("GooglePublicAPICredential",getenv('GOOGLE_PUBLIC_API_CREDENTIAL')); 
 
 
 $this->setConf("portalHTMLTop",'CloudFrameWorkTop.php');

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<ruleset name="ADNBP Cloud FrameWork">
+    <description>PHPCS ruleset for ADNBP Cloud FrameWork</description>
+
+    <!-- Scan these directories -->
+    <file>cloudframework_appengine_php/src</file>
+    <file>ADNBP/class</file>
+    <file>webapp</file>
+    <file>tests</file>
+
+    <!-- Exclude vendored third-party code -->
+    <exclude-pattern>ADNBP/class/vendor/*</exclude-pattern>
+    <exclude-pattern>ADNBP/class/excel/PHPExcel/*</exclude-pattern>
+    <exclude-pattern>ADNBP/class/email/sendgrid-google-php/*</exclude-pattern>
+    <exclude-pattern>ADNBP/class/sms/twilio/Twilio/*</exclude-pattern>
+
+    <!-- Use PSR-12 as base, but keep it lenient for legacy code -->
+    <rule ref="PSR12">
+        <!-- Relax rules that are impractical for legacy code -->
+        <exclude name="PSR12.Files.FileHeader.SpacingAfterLastUse"/>
+        <exclude name="Generic.Files.LineLength.TooLong"/>
+    </rule>
+
+    <!-- Relax line length — legacy code has long lines -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="150"/>
+            <property name="absoluteLineLimit" value="200"/>
+        </properties>
+    </rule>
+
+    <!-- Ignore camelCaps on legacy method names -->
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <severity>0</severity>
+    </rule>
+
+    <!-- Allow PHP 4 style constructors and var -->
+    <rule ref="PSR2.Classes.PropertyDeclaration">
+        <severity>0</severity>
+    </rule>
+</ruleset>

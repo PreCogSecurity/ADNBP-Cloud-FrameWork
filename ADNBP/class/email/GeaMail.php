@@ -234,7 +234,7 @@ require_once(dirname(__FILE__) . '/mimePart.php');
         function buildMessage($params = array())
         {
                 if (!empty($params)) {
-                        while (list($key, $value) = each($params)) {
+                        foreach ($params as $key => $value) {
                                 $this->build_params[$key] = $value;
                         }
                 }

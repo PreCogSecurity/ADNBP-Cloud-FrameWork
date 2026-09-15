@@ -17,7 +17,7 @@
        }
     
        // Build the list of image extensions
-       while (list($key,) = each($this->image_types)) { $extensions[] = $key; }
+       foreach ($this->image_types as $key => $_unused) { $extensions[] = $key; }
        preg_match_all('/(?:"|\')([^"\']+\.('.implode('|', $extensions).'))(?:"|\')/Ui', $html, $images);
     
     
@@ -25,7 +25,7 @@
        for ($i=0; $i<count($images[1]); $i++) $files[$images[1][$i]] = "GeaClassesPrefijo".basename($images[1][$i]);
     
        if(is_array($files))
-       while (list($key,$value) = each($files)) { 
+       foreach ($files as $key => $value) { 
              $html = str_replace($key, basename($value), $html);
        }
     
@@ -42,7 +42,7 @@
                 reset($files);
     
                 if(is_array($files))
-                while (list($key,$value) = each($files)) { 
+                foreach ($files as $key => $value) { 
                      if(!$fp = @fopen($dir_dest."/$value","w")) {
                         $this->traza .= "<li>$dir_dest/$value can no be generated.\n";
                      } else {
@@ -61,7 +61,7 @@
                             $location = "";
                          } else {
                             // $stream = fread( $f, filesize( $url_base.$key ) );
-                            // Como no funciona para ficheros remotos utilizamos 8000000 como máximo
+                            // Como no funciona para ficheros remotos utilizamos 8000000 como mï¿½ximo
                             while( $stream = fread( $f, 800000 )) {
                                 fwrite($fp,$stream);
                             }

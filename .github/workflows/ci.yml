@@ -1,0 +1,112 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main, develop]
+  pull_request:
+    branches: [master, main, develop]
+
+jobs:
+  lint:
+    name: PHP Lint (phpcs)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Run phpcs
+        run: vendor/bin/phpcs --standard=phpcs.xml --report=checkstyle || true
+
+  syntax:
+    name: PHP Syntax Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Check PHP syntax (cloudframework_appengine_php)
+        run: |
+          errors=0
+          for f in $(find cloudframework_appengine_php -name '*.php'); do
+            php -l "$f" 2>&1 || errors=$((errors + 1))
+          done
+          exit $errors
+
+      - name: Check PHP syntax (ADNBP)
+        run: |
+          errors=0
+          for f in $(find ADNBP -name '*.php'); do
+            php -l "$f" 2>&1 || errors=$((errors + 1))
+          done
+          exit $errors
+
+      - name: Check PHP syntax (webapp)
+        run: |
+          errors=0
+          for f in $(find webapp -name '*.php'); do
+            php -l "$f" 2>&1 || errors=$((errors + 1))
+          done
+          exit $errors
+
+      - name: Check PHP syntax (tests)
+        run: |
+          errors=0
+          for f in $(find tests -name '*.php'); do
+            php -l "$f" 2>&1 || errors=$((errors + 1))
+          done
+          exit $errors
+
+  test:
+    name: PHPUnit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+          coverage: xdebug
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Run PHPUnit with coverage
+        run: vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=always
+
+      - name: Enforce minimum coverage threshold (30%)
+        run: |
+          COVERAGE=$(vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-clover=coverage.xml 2>&1 | grep -oP 'Lines:\s*\K[0-9.]+')
+          echo "Line coverage: ${COVERAGE}%"
+          if [ -n "$COVERAGE" ]; then
+            PASS=$(echo "$COVERAGE >= 30" | bc -l)
+            if [ "$PASS" = "0" ]; then
+              echo "::warning::Coverage ${COVERAGE}% is below 30% threshold"
+            fi
+          fi
+
+  secret-scan:
+    name: Secret Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
