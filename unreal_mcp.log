@@ -1,0 +1,17 @@
+2026-11-06 10:41:25,755 - mcp.server.lowlevel.server - DEBUG - [server.py:145] - Initializing server 'UnrealMCP'
+2026-11-06 10:41:25,755 - mcp.server.lowlevel.server - DEBUG - [server.py:384] - Registering handler for ListToolsRequest
+2026-11-06 10:41:25,755 - mcp.server.lowlevel.server - DEBUG - [server.py:406] - Registering handler for CallToolRequest
+2026-11-06 10:41:25,755 - mcp.server.lowlevel.server - DEBUG - [server.py:252] - Registering handler for ListResourcesRequest
+2026-11-06 10:41:25,755 - mcp.server.lowlevel.server - DEBUG - [server.py:286] - Registering handler for ReadResourceRequest
+2026-11-06 10:41:25,755 - mcp.server.lowlevel.server - DEBUG - [server.py:222] - Registering handler for PromptListRequest
+2026-11-06 10:41:25,755 - mcp.server.lowlevel.server - DEBUG - [server.py:239] - Registering handler for GetPromptRequest
+2026-11-06 10:41:25,755 - mcp.server.lowlevel.server - DEBUG - [server.py:267] - Registering handler for ListResourceTemplatesRequest
+2026-11-06 10:41:27,883 - UnrealMCP - INFO - [editor_tools.py:369] - Editor tools registered successfully
+2026-11-06 10:41:28,014 - UnrealMCP - INFO - [blueprint_tools.py:420] - Blueprint tools registered successfully
+2026-11-06 10:41:28,300 - UnrealMCP - INFO - [node_tools.py:430] - Blueprint node tools registered successfully
+2026-11-06 10:41:28,307 - UnrealMCP - INFO - [project_tools.py:64] - Project tools registered successfully
+2026-11-06 10:41:28,614 - UnrealMCP - INFO - [umg_tools.py:333] - UMG tools registered successfully
+2026-11-06 10:41:28,616 - UnrealMCP - INFO - [unreal_mcp_server.py:376] - Starting MCP server with stdio transport
+2026-11-06 10:41:28,835 - asyncio - DEBUG - [proactor_events.py:634] - Using proactor: IocpProactor
+2026-11-06 10:41:28,850 - UnrealMCP - INFO - [unreal_mcp_server.py:242] - UnrealMCP server starting up
+2026-11-06 10:41:28,851 - UnrealMCP - INFO - [unreal_mcp_server.py:49] - Connecting to Unreal at 127.0.0.1:55557...
